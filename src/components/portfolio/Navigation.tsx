@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import logoMark from "@/assets/logo-mark.png";
+import logoLandscape from "@/assets/logo-landscape.png";
 
 const navLinks = [
   { label: "Work", href: "#work" },
@@ -54,9 +54,9 @@ export const Navigation = () => {
               className="relative z-50"
             >
               <img
-                src={logoMark}
+                src={logoLandscape}
                 alt="Avinya Interactive"
-                className="h-8 md:h-10 w-auto"
+                className="h-12 md:h-16 w-auto"
               />
             </a>
 

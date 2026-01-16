@@ -1,78 +1,90 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import { Play, X, ChevronLeft, ChevronRight } from "lucide-react";
 
-const filters = [
-  "All",
-  "Feature Film",
-  "Advertising",
-  "Virtual Production",
-  "XR / AR / VR",
-  "Real-Time Previs",
-  "Motion Capture",
-];
-
-const caseStudies = [
+// Replace these video IDs with your actual YouTube video IDs
+const videos = [
   {
     id: 1,
-    title: "LED Volume Virtual Production",
+    title: "Virtual Production Showreel",
+    videoId: "dQw4w9WgXcQ", // YouTube video ID
     category: "Feature Film",
-    description: "End-to-end virtual production for feature film using LED volumes, camera tracking, and real-time lighting.",
-    role: "Technical Director",
-    tools: ["Unreal Engine", "Disguise", "RedSpy", "Brompton"],
+    description: "LED Volume Virtual Production showcase with cutting-edge technology",
+    duration: "3:45",
   },
   {
     id: 2,
-    title: "Creature Performance Capture",
+    title: "Motion Capture Demo",
+    videoId: "dQw4w9WgXcQ",
     category: "Motion Capture",
-    description: "On-set body and facial mocap for creature characters, including data cleanup and animation integration.",
-    role: "Mocap Technical Lead",
-    tools: ["Xsens", "Faceware", "MotionBuilder", "Maya"],
+    description: "Creature Performance Capture workflow and real-time animation",
+    duration: "4:20",
   },
   {
     id: 3,
-    title: "Real-Time Environment Build",
+    title: "Real-Time Environment",
+    videoId: "dQw4w9WgXcQ",
     category: "Real-Time Previs",
-    description: "Real-time environment development for previs and virtual art direction on major production.",
-    role: "Environment Artist",
-    tools: ["Unreal Engine", "Quixel", "Houdini"],
+    description: "Real-time environment development using Unreal Engine",
+    duration: "5:12",
   },
   {
     id: 4,
     title: "Broadcast Virtual Set",
+    videoId: "dQw4w9WgXcQ",
     category: "Virtual Production",
-    description: "Live broadcast virtual set using LED walls and real-time engine for corporate events.",
-    role: "Real-Time Supervisor",
-    tools: ["Unreal Engine", "Disguise", "NDI"],
+    description: "Live broadcast virtual set demonstration with LED walls",
+    duration: "2:58",
   },
   {
     id: 5,
-    title: "Medical AR Application",
+    title: "AR Experience",
+    videoId: "dQw4w9WgXcQ",
     category: "XR / AR / VR",
-    description: "Augmented reality application for medical training and visualization.",
-    role: "Technical Artist",
-    tools: ["Unity", "ARKit", "Blender"],
-  },
-  {
-    id: 6,
-    title: "Commercial Campaign",
-    category: "Advertising",
-    description: "High-end commercial campaign utilizing virtual production and CG integration.",
-    role: "VFX Supervisor",
-    tools: ["Unreal Engine", "Nuke", "Maya"],
+    description: "Medical AR application showcase and interactive features",
+    duration: "6:30",
   },
 ];
 
 export const Work = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [activeFilter, setActiveFilter] = useState("All");
-  const [selectedStudy, setSelectedStudy] = useState<number | null>(null);
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-  const filteredStudies = caseStudies.filter(
-    (study) => activeFilter === "All" || study.category === activeFilter
-  );
+  // Auto-play carousel
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % videos.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying]);
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+    setIsAutoPlaying(false);
+    // Resume autoplay after 10 seconds
+    setTimeout(() => setIsAutoPlaying(true), 10000);
+  };
+
+  const goToPrevious = () => {
+    setCurrentIndex((prev) => (prev - 1 + videos.length) % videos.length);
+    setIsAutoPlaying(false);
+    setTimeout(() => setIsAutoPlaying(true), 10000);
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % videos.length);
+    setIsAutoPlaying(false);
+    setTimeout(() => setIsAutoPlaying(true), 10000);
+  };
+
+  const currentVideo = videos[currentIndex];
 
   return (
     <section id="work" className="section-padding bg-muted/30" ref={ref}>
@@ -90,166 +102,172 @@ export const Work = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="section-heading mb-12"
+          className="section-heading mb-16"
         >
-          Case Studies
+          Video Showcase
         </motion.h2>
 
-        {/* Filters */}
+        {/* Custom Carousel */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-wrap gap-3 mb-12"
+          className="relative max-w-5xl mx-auto"
         >
-          {filters.map((filter) => (
-            <button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              className={`px-4 py-2 text-sm font-sans transition-all duration-300 ${
-                activeFilter === filter
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-              }`}
-            >
-              {filter}
-            </button>
-          ))}
-        </motion.div>
+          {/* Carousel Wrapper */}
+          <div className="relative overflow-hidden bg-card border border-border shadow-2xl">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="relative"
+              >
+                {/* Video Thumbnail */}
+                <div 
+                  className="relative aspect-video bg-secondary/50 cursor-pointer group overflow-hidden"
+                  onClick={() => setSelectedVideo(currentVideo.videoId)}
+                >
+                  {/* YouTube Thumbnail */}
+                  <img
+                    src={`https://img.youtube.com/vi/${currentVideo.videoId}/maxresdefault.jpg`}
+                    alt={currentVideo.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    onError={(e) => {
+                      e.currentTarget.src = `https://img.youtube.com/vi/${currentVideo.videoId}/hqdefault.jpg`;
+                    }}
+                  />
+                  
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-500" />
+                  
+                  {/* Play Button */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="relative"
+                    >
+                      <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl group-hover:bg-primary/40 transition-all duration-500" />
+                      <div className="relative w-20 h-20 md:w-24 md:h-24 bg-primary/90 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-primary transition-all duration-300 shadow-2xl">
+                        <Play className="w-8 h-8 md:w-10 md:h-10 text-primary-foreground ml-1 fill-current" />
+                      </div>
+                    </motion.div>
+                  </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredStudies.map((study, index) => (
-            <motion.article
-              key={study.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1 * index }}
-              onClick={() => setSelectedStudy(study.id)}
-              className="group cursor-pointer bg-card border border-border p-6 card-hover"
-            >
-              {/* Thumbnail placeholder */}
-              <div className="aspect-video bg-secondary/50 mb-6 overflow-hidden">
-                <div className="w-full h-full flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                  <span className="label-text text-muted-foreground">
-                    Project Image
-                  </span>
+                  {/* Duration Badge */}
+                  <div className="absolute top-4 right-4 bg-black/80 backdrop-blur-sm px-3 py-1.5 text-sm text-white font-medium">
+                    {currentVideo.duration}
+                  </div>
+
+                  {/* Category Badge */}
+                  <div className="absolute top-4 left-4 bg-primary/90 backdrop-blur-sm px-3 py-1.5 text-sm text-primary-foreground font-medium uppercase tracking-wider">
+                    {currentVideo.category}
+                  </div>
                 </div>
-              </div>
 
-              <span className="label-text text-primary mb-2 block">
-                {study.category}
-              </span>
+                {/* Video Info */}
+                <div className="p-8 md:p-10 bg-card">
+                  <h3 className="font-serif text-3xl md:text-4xl text-foreground mb-4">
+                    {currentVideo.title}
+                  </h3>
+                  <p className="text-muted-foreground text-base md:text-lg leading-relaxed max-w-3xl">
+                    {currentVideo.description}
+                  </p>
+                </div>
+              </motion.div>
+            </AnimatePresence>
 
-              <h3 className="font-serif text-2xl text-foreground mb-3 group-hover:text-primary transition-colors">
-                {study.title}
-              </h3>
+            {/* Navigation Arrows */}
+            <button
+              onClick={goToPrevious}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-12 h-12 rounded-full bg-white/20 dark:bg-black/40 backdrop-blur-sm hover:bg-white/40 dark:hover:bg-black/60 transition-all duration-300 group focus:outline-none focus:ring-4 focus:ring-white/50 dark:focus:ring-black/50"
+              aria-label="Previous video"
+            >
+              <ChevronLeft className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+            </button>
 
-              <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                {study.description}
-              </p>
+            <button
+              onClick={goToNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-12 h-12 rounded-full bg-white/20 dark:bg-black/40 backdrop-blur-sm hover:bg-white/40 dark:hover:bg-black/60 transition-all duration-300 group focus:outline-none focus:ring-4 focus:ring-white/50 dark:focus:ring-black/50"
+              aria-label="Next video"
+            >
+              <ChevronRight className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+            </button>
 
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">
-                  {study.role}
-                </span>
-                <ArrowUpRight
-                  size={18}
-                  className="text-primary opacity-0 group-hover:opacity-100 transition-opacity"
+            {/* Slide Indicators */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex space-x-3">
+              {videos.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === currentIndex
+                      ? 'bg-primary w-8'
+                      : 'bg-white/50 hover:bg-white/80'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                  aria-current={index === currentIndex}
                 />
-              </div>
-            </motion.article>
-          ))}
-        </div>
+              ))}
+            </div>
+          </div>
 
-        {/* Case Study Modal - simplified for now */}
-        {selectedStudy && (
+          {/* Helper Text */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-center text-sm text-muted-foreground mt-8"
+          >
+            Click to watch • Auto-plays every 5 seconds • {currentIndex + 1} / {videos.length}
+          </motion.p>
+        </motion.div>
+      </div>
+
+      {/* Video Modal */}
+      <AnimatePresence>
+        {selectedVideo && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm overflow-y-auto"
-            onClick={() => setSelectedStudy(null)}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md"
+            onClick={() => setSelectedVideo(null)}
           >
-            <div className="min-h-screen py-20">
-              <div
-                className="container-custom max-w-4xl"
-                onClick={(e) => e.stopPropagation()}
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3, type: "spring" }}
+              className="relative w-full max-w-6xl aspect-video"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedVideo(null)}
+                className="absolute -top-12 right-0 md:-right-12 md:top-0 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 group z-10"
               >
-                {(() => {
-                  const study = caseStudies.find((s) => s.id === selectedStudy);
-                  if (!study) return null;
+                <X className="w-6 h-6 text-white group-hover:rotate-90 transition-transform duration-300" />
+              </button>
 
-                  return (
-                    <motion.div
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4 }}
-                    >
-                      <button
-                        onClick={() => setSelectedStudy(null)}
-                        className="label-text text-muted-foreground hover:text-foreground mb-8 block"
-                      >
-                        ← Back to Work
-                      </button>
-
-                      <span className="label-text text-primary mb-4 block">
-                        {study.category}
-                      </span>
-
-                      <h2 className="font-serif text-4xl md:text-5xl text-foreground mb-6">
-                        {study.title}
-                      </h2>
-
-                      {/* Media placeholder */}
-                      <div className="aspect-video bg-secondary/50 mb-8">
-                        <div className="w-full h-full flex items-center justify-center">
-                          <span className="label-text text-muted-foreground">
-                            Project Media
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                        <div>
-                          <span className="label-text text-muted-foreground block mb-2">
-                            Role
-                          </span>
-                          <p className="text-foreground">{study.role}</p>
-                        </div>
-                        <div className="md:col-span-2">
-                          <span className="label-text text-muted-foreground block mb-2">
-                            Tools
-                          </span>
-                          <div className="flex flex-wrap gap-2">
-                            {study.tools.map((tool) => (
-                              <span
-                                key={tool}
-                                className="px-3 py-1 bg-secondary text-sm text-secondary-foreground"
-                              >
-                                {tool}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <span className="label-text text-muted-foreground block mb-2">
-                          Overview
-                        </span>
-                        <p className="text-muted-foreground leading-relaxed">
-                          {study.description}
-                        </p>
-                      </div>
-                    </motion.div>
-                  );
-                })()}
+              {/* Video Player */}
+              <div className="w-full h-full bg-black shadow-2xl overflow-hidden">
+                <iframe
+                  src={`https://www.youtube.com/embed/${selectedVideo}?autoplay=1&rel=0&modestbranding=1`}
+                  title="Video Player"
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         )}
-      </div>
+      </AnimatePresence>
     </section>
   );
 };

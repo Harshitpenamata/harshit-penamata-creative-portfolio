@@ -88,14 +88,14 @@ export const Contact = () => {
       </div>
 
       {/* Footer */}
-      <footer className="container-custom mt-20 pt-8 border-t border-border">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+      <footer className="container-custom mt-12 pt-6 pb-6 border-t border-border">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <img
             src={logoLandscape}
             alt="Avinya Interactive"
-            className="h-8 w-auto opacity-60"
+            className="h-12 md:h-14 w-auto opacity-70 hover:opacity-100 transition-opacity"
           />
-          <p className="text-sm text-muted-foreground">
+          <p className="text-base md:text-lg text-muted-foreground font-medium">
             © {new Date().getFullYear()} Harshit Penamata. All rights reserved.
           </p>
         </div>
