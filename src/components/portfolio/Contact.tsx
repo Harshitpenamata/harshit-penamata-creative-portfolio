@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import { Mail, Linkedin, Play } from "lucide-react";
+import { Mail, Linkedin } from "lucide-react";
 import logoLandscape from "@/assets/logo-landscape.png";
 
 export const Contact = () => {
@@ -47,19 +47,19 @@ export const Contact = () => {
         >
           {/* Email */}
           <a
-            href="mailto:hello@harshitpenamata.com"
+            href="mailto:avinyainteractive@gmail.com"
             className="group flex items-center gap-3 px-6 py-4 bg-card border border-border hover:border-primary transition-colors"
           >
             <Mail
               size={20}
               className="text-primary group-hover:scale-110 transition-transform"
             />
-            <span className="text-foreground">hello@harshitpenamata.com</span>
+            <span className="text-foreground">avinyainteractive@gmail.com</span>
           </a>
 
           {/* LinkedIn */}
           <a
-            href="https://linkedin.com/in/harshitpenamata"
+            href="https://www.linkedin.com/in/harshit-penamata-63a464163"
             target="_blank"
             rel="noopener noreferrer"
             className="group flex items-center gap-3 px-6 py-4 bg-card border border-border hover:border-primary transition-colors"
@@ -69,20 +69,6 @@ export const Contact = () => {
               className="text-primary group-hover:scale-110 transition-transform"
             />
             <span className="text-foreground">LinkedIn</span>
-          </a>
-
-          {/* Showreel */}
-          <a
-            href="https://vimeo.com/harshitpenamata"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-3 px-6 py-4 bg-card border border-border hover:border-primary transition-colors"
-          >
-            <Play
-              size={20}
-              className="text-primary group-hover:scale-110 transition-transform"
-            />
-            <span className="text-foreground">Showreel</span>
           </a>
         </motion.div>
       </div>

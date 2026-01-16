@@ -58,12 +58,11 @@ export const About = () => {
             className="relative"
           >
             <div className="aspect-[4/5] bg-secondary/50 rounded-sm overflow-hidden">
-              {/* Placeholder for portrait - add your image here */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="label-text text-muted-foreground">
-                  Portrait / Visual
-                </span>
-              </div>
+              <img 
+                src="/harshit-portrait.jpeg" 
+                alt="Harshit Penamata"
+                className="w-full h-full object-cover"
+              />
             </div>
             {/* Decorative element */}
             <div className="absolute -bottom-4 -right-4 w-24 h-24 border border-primary/30" />

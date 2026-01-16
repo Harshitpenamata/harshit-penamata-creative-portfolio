@@ -7,43 +7,43 @@ import { Play, X, ChevronLeft, ChevronRight } from "lucide-react";
 const videos = [
   {
     id: 1,
-    title: "Virtual Production Showreel",
-    videoId: "dQw4w9WgXcQ", // YouTube video ID
-    category: "Feature Film",
-    description: "LED Volume Virtual Production showcase with cutting-edge technology",
-    duration: "3:45",
+    title: "Video 1",
+    videoId: "Q0-G3h27wFA",
+    category: "",
+    description: "",
+    duration: "",
   },
   {
     id: 2,
-    title: "Motion Capture Demo",
-    videoId: "dQw4w9WgXcQ",
-    category: "Motion Capture",
-    description: "Creature Performance Capture workflow and real-time animation",
-    duration: "4:20",
+    title: "Video 2",
+    videoId: "JHSpk4rtfDk",
+    category: "",
+    description: "",
+    duration: "",
   },
   {
     id: 3,
-    title: "Real-Time Environment",
-    videoId: "dQw4w9WgXcQ",
-    category: "Real-Time Previs",
-    description: "Real-time environment development using Unreal Engine",
-    duration: "5:12",
+    title: "Video 3",
+    videoId: "oB8yZfsfExI",
+    category: "",
+    description: "",
+    duration: "",
   },
   {
     id: 4,
-    title: "Broadcast Virtual Set",
-    videoId: "dQw4w9WgXcQ",
-    category: "Virtual Production",
-    description: "Live broadcast virtual set demonstration with LED walls",
-    duration: "2:58",
+    title: "Video 4",
+    videoId: "icBBq_GJWcE",
+    category: "",
+    description: "",
+    duration: "",
   },
   {
     id: 5,
-    title: "AR Experience",
-    videoId: "dQw4w9WgXcQ",
-    category: "XR / AR / VR",
-    description: "Medical AR application showcase and interactive features",
-    duration: "6:30",
+    title: "Video 5",
+    videoId: "DKZ0MkKdmVs",
+    category: "",
+    description: "",
+    duration: "",
   },
 ];
 
@@ -156,27 +156,17 @@ export const Work = () => {
                       </div>
                     </motion.div>
                   </div>
-
-                  {/* Duration Badge */}
-                  <div className="absolute top-4 right-4 bg-black/80 backdrop-blur-sm px-3 py-1.5 text-sm text-white font-medium">
-                    {currentVideo.duration}
-                  </div>
-
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4 bg-primary/90 backdrop-blur-sm px-3 py-1.5 text-sm text-primary-foreground font-medium uppercase tracking-wider">
-                    {currentVideo.category}
-                  </div>
                 </div>
 
-                {/* Video Info */}
-                <div className="p-8 md:p-10 bg-card">
+                {/* Video Info - Hidden for now */}
+                {/* <div className="p-8 md:p-10 bg-card">
                   <h3 className="font-serif text-3xl md:text-4xl text-foreground mb-4">
                     {currentVideo.title}
                   </h3>
                   <p className="text-muted-foreground text-base md:text-lg leading-relaxed max-w-3xl">
                     {currentVideo.description}
                   </p>
-                </div>
+                </div> */}
               </motion.div>
             </AnimatePresence>
 
